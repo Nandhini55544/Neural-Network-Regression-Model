@@ -49,39 +49,67 @@ Evaluate the model with the testing data.
 ### Name: Nandhini M
 ### Register Number: 212224040211
 ```python
-#creating model class
 class NeuralNet(nn.Module):
-  def __init__(self):
+    def __init__(self):
         super().__init__()
-        self.fc1=nn.Linear(1, 8)
-        self.fc2=nn.Linear(8, 10)
-        self.fc3=nn.Linear(10, 1)
-        self.relu=nn.ReLU()
-        self.history={'loss':[]}
+        self.fc1 = nn.Linear(1, 8)
+        self.fc2 = nn.Linear(8, 10)
+        self.fc3 = nn.Linear(10, 1)
+        self.relu = nn.ReLU()
+        self.history = {'loss': []}
 
-  def forward(self,x):
-        x=self.relu(self.fc1(x))
-        x=self.relu(self.fc2(x))
-        x=self.fc3(x)
+    def forward(self, x):
+        x = self.relu(self.fc1(x))
+        x = self.relu(self.fc2(x))
+        x = self.fc3(x)
         return x
 
-# Initialize the Model, Loss Function, and Optimizer
-ai_brain = NeuralNet()
-criterion=nn.MSELoss()
-optimizer=optim.RMSprop(ai_brain.parameters(), lr=0.001)
+nandhini = NeuralNet()
+criterion = nn.MSELoss()
+optimizer = optim.RMSprop(nandhini.parameters(), lr=0.001)
 
-#Function to train model
-def train_model(ai_brain, X_train, y_train, criterion, optimizer, epochs=2000):
+X_train = torch.tensor([[1.0],[2.0],[3.0],[4.0],[5.0]])
+y_train = torch.tensor([[2.0],[4.0],[6.0],[8.0],[10.0]])
 
+X_test = torch.tensor([[6.0],[7.0],[8.0]])
+y_test = torch.tensor([[12.0],[14.0],[16.0]])
+
+def train_model(model, X, y, criterion, optimizer, epochs=2000):
     for epoch in range(epochs):
-      optimizer.zero_grad()
-      loss=criterion(ai_brain(X_train),y_train)
-      loss.backward()
-      optimizer.step()
+        optimizer.zero_grad()
+        output = model(X)
+        loss = criterion(output, y)
+        loss.backward()
+        optimizer.step()
 
-      ai_brain.history['loss'].append(loss.item())
-      if epoch % 200 == 0:
-          print(f'Epoch [{epoch}/{epochs}], Loss: {loss.item():.6f}')
+        model.history['loss'].append(loss.item())
+
+        if epoch % 200 == 0:
+            print(f'Epoch [{epoch}/{epochs}] Loss: {loss.item():.6f}')
+
+train_model(nandhini, X_train, y_train, criterion, optimizer)
+
+nandhini.eval()
+
+with torch.no_grad():
+    test_predictions = nandhini(X_test)
+    test_loss = criterion(test_predictions, y_test)
+
+print(f"\nTest Loss: {test_loss.item():.6f}")
+
+print("\nPredictions vs Actual:")
+for pred, actual in zip(test_predictions, y_test):
+    print(f"{pred.item():.2f}  vs  {actual.item()}")
+
+test_value = torch.tensor([[10.0]])   # change to any value you want
+print("\nPrediction:", nandhini(test_value).item())
+
+plt.plot(nandhini.history['loss'])
+plt.xlabel("Epoch")
+plt.ylabel("Loss")
+plt.title("Training Loss")
+plt.show()
+
 ```
 ## Dataset Information
 
@@ -89,19 +117,19 @@ def train_model(ai_brain, X_train, y_train, criterion, optimizer, epochs=2000):
 
 ## OUTPUT
 
-<img width="722" height="276" alt="image" src="https://github.com/user-attachments/assets/e73d82d9-bfa3-4bd7-af29-e47458644c88" />
+<img width="290" height="214" alt="image" src="https://github.com/user-attachments/assets/e5eb2981-be8b-4ad8-b4ff-9d4ccb59b0d2" />
 
-<img width="771" height="42" alt="image" src="https://github.com/user-attachments/assets/caa2594e-2edc-4400-9677-0040734cb246" />
+<img width="181" height="83" alt="image" src="https://github.com/user-attachments/assets/0b8e0ff6-b0c8-41a6-84b9-c7ca651e9403" />
 
 
 ### Training Loss Vs Iteration Plot
 
-<img width="688" height="546" alt="image" src="https://github.com/user-attachments/assets/b405788c-6521-4c0f-a8e9-fd48902d122d" />
+<img width="560" height="452" alt="image" src="https://github.com/user-attachments/assets/4fc26224-3e33-485e-8db9-c21b3d520774" />
 
 
 ### New Sample Data Prediction
 
-<img width="466" height="45" alt="image" src="https://github.com/user-attachments/assets/860ddbfc-9a98-4053-aba3-141d3df0cce9" />
+<img width="237" height="23" alt="image" src="https://github.com/user-attachments/assets/b6b41a46-9c08-468d-93ee-1093401026e8" />
 
 
 ## RESULT
