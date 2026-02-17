@@ -12,7 +12,7 @@ The model is trained using backpropagation to minimize a loss function such as M
 
 ## Neural Network Model
 
-<img width="1115" height="695" alt="image" src="https://github.com/user-attachments/assets/1a3163ce-4b0f-4fa5-9b13-61396699d3a9" />
+<img width="770" height="644" alt="image" src="https://github.com/user-attachments/assets/3f5325e6-eba1-405c-8e8f-6c0c27589abf" />
 
 
 ## DESIGN STEPS
